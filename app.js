@@ -1,104 +1,121 @@
 let colors = [];
+let pickedColor, clickedColor;
 
 
-var playDivs = document.querySelectorAll(".square");
-
-var startButton = document.querySelector("#bt-1");
-var resetButton = document.querySelector("#bt-2");
+var container = document.querySelector("#container");
+var newColorsBtn = document.querySelector("#bt-1");
 var mainColor = document.querySelector("#score");
 var header = document.querySelector("#header")
 var firstDiv = document.querySelector(".firstDiv");
-var h2 = document.querySelector("h2");
-
-var easyDiff = document.querySelector("#bt-3");
-var hardDiff = document.querySelector("#bt-4");
-
+var message = document.querySelector(".message");
+var allButtons = document.querySelectorAll("button");
 //setting up the board
 
-setup(6);
-headerColor();
+init()
 
-//starts the board all over again. **Needs  Working
-
-startButton.addEventListener("click", function() {
-	for(var i=0; i<colors.length; i++) {
-		playDivs[i].classList.remove("hide");
-	}
+function init() {
 	setup(6);
-})
-
-// resets the color to all blue
-
-resetButton.addEventListener("click", function() {
-	reset();
-})
-
-easyDiff.addEventListener("click", function() {
-	setup(3);
-
-})
-
-hardDiff.addEventListener("click", function() {
-	setup(6);
-})
-
-//function to generate random Number RGB
-
-
-
-function reset() {
-	for(var i =0; i <colors.length; i++) {
-	playDivs[i].style.backgroundColor = "";
+	headerColor();
+	modeButtons()
 }
-}
+
 
 //main function to setup the board.
 
 function setup(num) {
 
+	resetBoard();
 	//pushing random colors to colors array using getRandomRgb function
-	colors =[];
 	for (var i = 0; i < num; i++) {
-	// colors.splice(i, 1, getRandomRgb());
 
 	//pushing random generated color to the colors Array
   	colors.push(getRandomRgb());
 
-  	//Settings Divs Color from Colors Array
-  	playDivs[i].style.backgroundColor = colors[i];
+  	container.insertAdjacentHTML('beforeend', '<div class="square"></div>');
+  }
+  	// Settings Divs Color from Colors Array and for header
+  	colorLogic();
+  	headerColor();	
 
-  	playDivs[i].addEventListener("click", function() {
-  		if(this.style.backgroundColor === mainColor.innerHTML) {
-  			header.style.backgroundColor = this.style.backgroundColor;
-  			h2.innerHTML = "Correct"
-  		} else{
+}
+
+
+//function for Header color logic(pick random color from colors array)
+
+function headerColor() {
+	let num = Math.floor(Math.random() * colors.length);
+	pickedColor = colors[num];
+	mainColor.innerHTML = pickedColor;
+
+}
+
+//function to generate random Number RGB
+
+function getRandomRgb() {
+	// var r = Math.floor(Math.random() * 256);
+	var r = Math.floor((Math.random() * 255) + 1);
+	var g = Math.floor((Math.random() * 255) + 1);
+	var b = Math.floor((Math.random() * 255) + 1);
+	return 'rgb(' + r + ', ' + g + ', ' + b + ')';
+}
+
+
+function colorLogic() {
+	//settings colors from square by looping through colors array
+	var playDivs = document.querySelectorAll(".square");
+  	for (var y =0; y < colors.length; y++) {
+  		playDivs[y].style.backgroundColor = colors[y];
+
+  	//adding click listener to all the square, once a square is clicked, clicked color is matched
+  	//with the picked color and several decisions are made based on the coutcome of if else
+  	playDivs[y].addEventListener("click", function() {
+  			clickedColor = this.style.backgroundColor;
+  			if(clickedColor === pickedColor) {
+  			header.style.backgroundColor = clickedColor;
+  			newColorsBtn.innerHTML = "Play Again?"
+  			newColorsBtn.classList.remove("selected");
+
+  			for(var j=0; j<colors.length; j++) {
+  				playDivs[j].classList.remove("hide");
+  				playDivs[j].style.backgroundColor = clickedColor;
+  			}
+
+  			message.innerHTML = "Correct"
+  			// if the click doesnt match with picked color, square is bein hidden using display none
+  		} 	else{
   			this.classList.add("hide");
+  			newColorsBtn.classList.remove("selected");
+  			message.innerHTML = "Try Again"
   		}
 	
   	})
-}
-  	//adding click event to each div, also if clicked adding display none to hide the div 
-}
-
-
-
-function headerColor() {
-	let num = Math.floor((Math.random() * (colors.length-1)) + 1);
-	mainColor.innerHTML =colors[num];
-	console.log("type of header colors is " + typeof colors[num])
-	// header.style.backgroundColor = colors[num];
-
+  	}
 }
 
-function getRandomRgb() {
-  var r = Math.floor((Math.random() * 255) + 1);
-  var g = Math.floor((Math.random() * 255) + 1);
-  var b = Math.floor((Math.random() * 255) + 1);
-  return 'rgb(' + r + ', ' + g + ', ' + b + ')';
+//function to reset the board. 
+
+function resetBoard() {
+	colors =[];
+	container.innerHTML = "";
+	message.innerHTML = "";
+	header.style.backgroundColor =""
+	newColorsBtn.innerHTML = "New Colors"
 }
 
-// function matchColor () {
-
-// 	if()
-
-// }
+//adding click listener to all Buttons
+function modeButtons() {
+for (var i = 0; i <allButtons.length; i++ ) {
+	allButtons[i].addEventListener("click", function() {
+		//first removing selected css class from all buttons
+		for(var y=0; y<allButtons.length; y++) {
+			allButtons[y].classList.remove("selected");
+		}
+		//adding selected css class to the selected button
+		this.classList.add("selected");
+		//checking to see if the selected button is easy difficullty
+		//if yes then run setup(3) for 3 square, else run setup(6)
+		this.textContent === "Easy" ? setup(3) : setup(6);
+		// resetBoard();
+	})
+}
+}

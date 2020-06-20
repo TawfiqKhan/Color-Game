@@ -1,11 +1,14 @@
 body {
 	background-color: #232323;
-/*	background-color: lightgreen;*/
+	min-width: 400px;
+	margin: 0;
+	font-family: "Montserrat", "Avenir";
+	font-weight: 700;
 }
 
-.container {
-	width: 600px;
-	margin: 0 auto;
+#container {
+	width: 500px;
+	margin: 20px auto;
 }
 
 .square {
@@ -15,35 +18,23 @@ body {
 	width: 30%;
 	float:left;
 	border-radius: 10px;
+	transition: display 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
 }
 
 #header {
 	color: white;
 	text-align: center;
-	background-color: rgb(52, 140, 235);
+	font-size: 1.7rem;
+	background-color: steelblue;
 	padding: 1.5% 5%;
-}
-
-.title {
-	padding-top: 1.6%;
-	padding-bottom: 0;
-	font-size: 1.7rem;
 	text-transform: uppercase;
-	margin: 0 0;
-}
-
-.endTitle {
-	padding-bottom: 0;
-	padding-bottom: 1.6%;
-	font-size: 1.7rem;
-	margin: 0 0;
-	text-transform: uppercase;
+	line-height: 0.0;
 }
 
 #score {
-	text-transform: uppercase;
-	font-size: 3rem;
-	margin: 0 0;
+	font-size: 3.5rem;
 }
 
 .hide {
@@ -55,10 +46,36 @@ body {
 	text-align: center;
 }
 
-h2 {
-	display: inline;
+.message {
+	display: inline-block;
+	width: 20%;
+	font-weight: inherit;
 }
 
-.difficulty {
-	float: right;
+button {
+
+	height: 100%;
+	text-transform: uppercase;
+	font-weight: inherit;
+	padding: 3px 10px;
+	margin: 0 5px;
+	border: none;
+	outline: none;
+	color:steelblue;
+	letter-spacing: 1px;
+	background: none;
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+}
+
+button:hover {
+	color: white;
+	background-color: steelblue;
+	cursor: pointer;
+}
+
+.selected {
+	background-color: steelblue;
+	color: white;
 }
