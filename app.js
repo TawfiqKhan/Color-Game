@@ -11,6 +11,7 @@ var message = document.querySelector(".message");
 var allButtons = document.querySelectorAll("button");
 //setting up the board
 
+//Function to start the game
 init()
 
 function init() {
